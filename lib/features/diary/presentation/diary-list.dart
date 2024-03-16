@@ -1,4 +1,4 @@
-// import 'package:christian_app/features/diary/presentation/diary-item.dart';
+// import 'package:salvation/features/diary/presentation/diary-item.dart';
 // import 'package:flutter/material.dart';
 
 // class DiaryList extends StatefulWidget {

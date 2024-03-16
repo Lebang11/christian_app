@@ -1,5 +1,5 @@
-import 'package:christian_app/features/appbar.dart';
-import 'package:christian_app/features/navbar.dart';
+import 'package:salvation/features/appbar.dart';
+import 'package:salvation/features/navbar.dart';
 import 'package:flutter/material.dart';
 
 class ChurchMap extends StatefulWidget {

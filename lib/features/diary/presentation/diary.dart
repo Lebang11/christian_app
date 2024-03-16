@@ -1,12 +1,12 @@
-import 'package:christian_app/features/appbar.dart';
-import 'package:christian_app/features/diary/data/diary.dart';
-import 'package:christian_app/features/diary/presentation/diary-list.dart';
-import 'package:christian_app/features/navbar.dart';
+import 'package:salvation/features/appbar.dart';
+import 'package:salvation/features/diary/data/diary.dart';
+import 'package:salvation/features/diary/presentation/diary-list.dart';
+import 'package:salvation/features/navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:christian_app/features/diary/data/diary_database.dart';
+import 'package:salvation/features/diary/data/diary_database.dart';
 import 'package:provider/provider.dart';
-import 'package:christian_app/features/diary/presentation/diary-item.dart';
+import 'package:salvation/features/diary/presentation/diary-item.dart';
 import 'package:intl/intl.dart';
 
 class Diary extends StatefulWidget {

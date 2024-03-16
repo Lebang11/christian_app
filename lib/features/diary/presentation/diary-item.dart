@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:christian_app/features/diary/presentation/diary.dart';
-import 'package:christian_app/features/diary/data/diary.dart';
-import 'package:christian_app/features/diary/data/diary_database.dart';
+import 'package:salvation/features/diary/presentation/diary.dart';
+import 'package:salvation/features/diary/data/diary.dart';
+import 'package:salvation/features/diary/data/diary_database.dart';
 import 'package:provider/provider.dart';
 
 class DiaryItem extends StatefulWidget {

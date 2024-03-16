@@ -1,4 +1,4 @@
-import 'package:christian_app/features/diary/data/diary.dart';
+import 'package:salvation/features/diary/data/diary.dart';
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';

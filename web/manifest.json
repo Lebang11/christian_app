@@ -1,6 +1,6 @@
 {
-    "name": "christian_app",
-    "short_name": "christian_app",
+    "name": "salvation",
+    "short_name": "salvation",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
