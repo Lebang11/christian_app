@@ -31,6 +31,11 @@ class _DiaryItemState extends State<DiaryItem> {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
+              title: Center(
+                child: Title(
+                    color: const Color.fromARGB(255, 40, 38, 52),
+                    child: Text('Update Diary')),
+              ),
               content: SizedBox(
                 height: 150.0,
                 child: Column(
@@ -76,6 +81,7 @@ class _DiaryItemState extends State<DiaryItem> {
   Widget build(BuildContext context) {
     final diaryDatabase = context.watch<DiaryDatabase>();
     List currentDiary = diaryDatabase.currentDiary;
+    currentDiary = currentDiary.reversed.toList();
 
     final diary = currentDiary[widget.index];
 

@@ -55,6 +55,11 @@ class _DiaryState extends State<Diary> {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
+              title: Center(
+                child: Title(
+                    color: const Color.fromARGB(255, 40, 38, 52),
+                    child: Text('Add To Diary')),
+              ),
               content: SizedBox(
                 height: 150.0,
                 child: Column(
@@ -106,6 +111,7 @@ class _DiaryState extends State<Diary> {
   Widget build(BuildContext context) {
     final diaryDatabase = context.watch<DiaryDatabase>();
     List currentDiary = diaryDatabase.currentDiary;
+    currentDiary = currentDiary.reversed.toList();
 
     return Scaffold(
       appBar: appbar(context),
@@ -122,8 +128,10 @@ class _DiaryState extends State<Diary> {
                     fontSize: 40.0,
                     color: const Color.fromARGB(255, 40, 38, 52))),
           ),
-          FloatingActionButton.extended(
-              onPressed: createDiary, label: Text('add')),
+          FloatingActionButton(
+            onPressed: createDiary,
+            child: Icon(Icons.add_sharp),
+          ),
           SizedBox(
             height: 22.0,
           ),
