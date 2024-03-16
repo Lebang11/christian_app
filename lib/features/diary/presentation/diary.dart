@@ -88,14 +88,14 @@ class _DiaryState extends State<Diary> {
               ),
               actions: [
                 MaterialButton(
-                  onPressed: () {
+                  onPressed: () async {
                     context.read<DiaryDatabase>().addDiary(
                         titleController.text, textController.text, dateToday);
 
-                    textController.clear();
-                    titleController.clear();
-
-                    Navigator.pop(context);
+                    textController.text = 'Loading...';
+                    titleController.text = 'Loading...';
+                    await Future.delayed(Duration(seconds: 1));
+                    Navigator.popAndPushNamed(context, '/diary');
                   },
                   child: Text('Create'),
                 )
