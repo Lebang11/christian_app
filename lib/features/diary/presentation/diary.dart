@@ -114,6 +114,7 @@ class _DiaryState extends State<Diary> {
     currentDiary = currentDiary.reversed.toList();
 
     return Scaffold(
+      backgroundColor: Colors.grey[900],
       appBar: appbar(context),
       bottomNavigationBar: navbar(
         currentIndex: _currentIndex,
@@ -123,14 +124,18 @@ class _DiaryState extends State<Diary> {
         children: [
           Text(
             'Diary',
-            style: GoogleFonts.lobster(
-                textStyle: TextStyle(
-                    fontSize: 40.0,
-                    color: const Color.fromARGB(255, 40, 38, 52))),
+            style: TextStyle(
+                fontFamily: 'Lobster',
+                fontSize: 40.0,
+                color: const Color.fromARGB(255, 222, 222, 222)),
           ),
           FloatingActionButton(
             onPressed: createDiary,
-            child: Icon(Icons.add_sharp),
+            child: Icon(
+              Icons.add_sharp,
+              color: Colors.white,
+            ),
+            backgroundColor: Colors.grey[900],
           ),
           SizedBox(
             height: 22.0,

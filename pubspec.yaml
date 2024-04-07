@@ -94,7 +94,9 @@ flutter:
     - family: Fire Sans
       fonts:
         - asset: assets/fonts/Salvation/Fira-Sans-Extra-Condensed.ttf
-        
+    - family: Lobster
+      fonts:
+        - asset: assets/fonts/Lobster/Lobster-Regular.ttf
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

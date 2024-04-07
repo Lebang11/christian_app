@@ -24,11 +24,22 @@ class _VerseState extends State<Verse> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appbar(context),
-      bottomNavigationBar: navbar(
-        currentIndex: _currentIndex,
-        onTap: _onTabTapped,
-      ),
-    );
+        backgroundColor: Colors.grey[900],
+        appBar: appbar(context),
+        bottomNavigationBar: navbar(
+          currentIndex: _currentIndex,
+          onTap: _onTabTapped,
+        ),
+        body: Column(children: [
+          Center(
+            child: Text(
+              'Verse of the day',
+              style: TextStyle(
+                  fontFamily: 'Lobster',
+                  fontSize: 40.0,
+                  color: const Color.fromARGB(255, 222, 222, 222)),
+            ),
+          )
+        ]));
   }
 }

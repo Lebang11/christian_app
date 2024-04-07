@@ -17,6 +17,7 @@ void main() async {
   runApp(ChangeNotifierProvider(
       create: (context) => DiaryDatabase(),
       child: MaterialApp(
+        themeMode: ThemeMode.dark,
         debugShowCheckedModeBanner: false,
         //To view your route, flutter run and click the button with your route name
         initialRoute: '/home',

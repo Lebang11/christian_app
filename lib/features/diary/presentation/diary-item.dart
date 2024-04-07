@@ -95,20 +95,26 @@ class _DiaryItemState extends State<DiaryItem> {
           side: BorderSide(width: 0.2),
           borderRadius: BorderRadius.circular(15), //<-- SEE HERE
         ),
-        tileColor: Color.fromARGB(255, 220, 220, 220),
-        title: Text(widget.title),
+        tileColor: Colors.grey[700],
+        title: Text(
+          widget.title,
+          style: TextStyle(color: Colors.white),
+        ),
         leading: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Icon(
               Icons.bookmark,
-              color: Colors.blueGrey,
+              color: Colors.grey,
             ),
           ],
         ),
         isThreeLine: true,
-        subtitle: Text("""${widget.text}
-      ${widget.date}"""),
+        subtitle: Text(
+          """${widget.text}
+      ${widget.date}""",
+          style: TextStyle(color: Color.fromARGB(255, 222, 222, 222)),
+        ),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [

@@ -23,39 +23,40 @@ class navbar extends StatelessWidget {
     //   onTap: onTap,
     // );
     return DotNavigationBar(
+      backgroundColor: Colors.grey[800],
       margin: EdgeInsets.only(left: 10, right: 10),
       currentIndex: currentIndex,
       dotIndicatorColor: Colors.white,
-      unselectedItemColor: Colors.grey[300],
+      unselectedItemColor: Colors.grey[900],
       splashBorderRadius: 50,
       enableFloatingNavBar: true,
       enablePaddingAnimation: true,
       onTap: onTap,
       marginR: EdgeInsets.symmetric(horizontal: 40, vertical: 0),
-      itemPadding: EdgeInsets.symmetric(vertical: 7, horizontal: 8),
+      itemPadding: EdgeInsets.symmetric(vertical: 7, horizontal: 16),
       items: [
         /// Home
         DotNavigationBarItem(
           icon: Icon(Icons.home),
-          selectedColor: Colors.black,
+          selectedColor: Colors.white,
         ),
 
         /// Likes
         DotNavigationBarItem(
           icon: Icon(Icons.map),
-          selectedColor: Colors.black,
+          selectedColor: Colors.white,
         ),
 
         /// Search
         DotNavigationBarItem(
           icon: Icon(Icons.edit),
-          selectedColor: Colors.black,
+          selectedColor: Colors.white,
         ),
 
         /// Profile
         DotNavigationBarItem(
           icon: Icon(Icons.book),
-          selectedColor: Colors.black,
+          selectedColor: Colors.white,
         ),
       ],
     );
