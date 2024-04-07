@@ -80,41 +80,40 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 40, 38, 52),
-      appBar: appbar(context),
-      body: const Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Welcome to SalvationApp!',
-              style: TextStyle(
-                  fontFamily: 'Kanit',
-                  fontSize: 30.0,
-                  color: Color.fromARGB(255, 220, 220, 220)),
-            )
-          ],
+        backgroundColor: Colors.black,
+        appBar: appbar(context),
+        body: const Center(
+          // Center is a layout widget. It takes a single child and positions it
+          // in the middle of the parent.
+          child: Column(
+            // Column is also a layout widget. It takes a list of children and
+            // arranges them vertically. By default, it sizes itself to fit its
+            // children horizontally, and tries to be as tall as its parent.
+            //
+            // Column has various properties to control how it sizes itself and
+            // how it positions its children. Here we use mainAxisAlignment to
+            // center the children vertically; the main axis here is the vertical
+            // axis because Columns are vertical (the cross axis would be
+            // horizontal).
+            //
+            // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
+            // action in the IDE, or press "p" in the console), to see the
+            // wireframe for each widget.
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                'Welcome to SalvationApp!',
+                style: TextStyle(
+                    fontFamily: 'Kanit',
+                    fontSize: 30.0,
+                    color: Color.fromARGB(255, 220, 220, 220)),
+              )
+            ],
+          ),
         ),
-      ),
-      bottomNavigationBar: navbar(
-        currentIndex: _currentIndex,
-        onTap: _onTabTapped,
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+        bottomNavigationBar: navbar(
+          currentIndex: _currentIndex,
+          onTap: _onTabTapped,
+        ));
   }
 }
