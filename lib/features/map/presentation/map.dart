@@ -18,8 +18,11 @@ class ChurchMap extends StatefulWidget {
 
 class _ChurchMapState extends State<ChurchMap> {
   late GoogleMapController mapController;
+  final search = TextEditingController();
 
   int _currentIndex = 1;
+
+  List<Map> results = [];
 
   void _onTabTapped(int index) {
     setState(() {
@@ -34,7 +37,7 @@ class _ChurchMapState extends State<ChurchMap> {
     String apiKey = "AIzaSyA__TXPjWnJHmL67G2xeqtwEyB61birpMU";
 
     Uri uri = Uri.https("maps.googleapis.com",
-      'maps/api/place/autocomplete/json',
+      'maps/api/place/queryautocomplete/json',
       {
         "input": query,
         "key": apiKey
@@ -46,8 +49,14 @@ class _ChurchMapState extends State<ChurchMap> {
 
     if (response != null) {
       var decoded_json = jsonDecode(response);
-      print(decoded_json);
+      List predictions = decoded_json["predictions"];
+      predictions.forEach((element) { 
+        
+        results.add(element);
+      });
+      // print(predictions);
     }
+    print(results);
   }
 
   Future<String?> fetchUrl(Uri uri, {Map<String, String>? headers}) async {
@@ -85,7 +94,9 @@ class _ChurchMapState extends State<ChurchMap> {
         ),
         body: Column(
         children: [
-          TextField(
+          TextFormField(
+            enableSuggestions: true,
+            controller: search,
             decoration: InputDecoration(
               labelText: "Search church here",
               labelStyle: TextStyle(
@@ -94,14 +105,14 @@ class _ChurchMapState extends State<ChurchMap> {
               )
             ),
           ),
-        SizedBox(
-          width: MediaQuery.of(context).size.width,  // or use fixed size like 200
-          height: MediaQuery.of(context).size.height /2,
-          child: GoogleShowMap()),
-        FloatingActionButton(onPressed:()=> {
-          
-          PlacesSearch('Jan smuts Avenue')
-          })
+          SizedBox(
+            width: MediaQuery.of(context).size.width,  // or use fixed size like 200
+            height: MediaQuery.of(context).size.height /2.5,
+            child: GoogleShowMap()),
+          FloatingActionButton(onPressed:()=> {
+            
+            PlacesSearch(search.text)
+            }),
         ])
           
 
