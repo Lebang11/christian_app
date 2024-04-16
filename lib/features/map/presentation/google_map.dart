@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
-
+import 'package:geolocator/geolocator.dart';
+import 'package:provider/provider.dart';
 class GoogleShowMap extends StatefulWidget {
   const GoogleShowMap({super.key});
 
@@ -20,11 +20,16 @@ class _GoogleShowMapState extends State<GoogleShowMap> {
       mapController = controller;
     }
 
+
+    Set<Marker> markers = {Marker(markerId: MarkerId("Here"), position: LatLng(-28, 24)),};
+
     return GoogleMap(
             onMapCreated: onMapCreated,
             initialCameraPosition: CameraPosition(
               target: center,
               zoom: 5.8,
-            ));
+            ),
+            markers: markers,
+            );
   }
 }
