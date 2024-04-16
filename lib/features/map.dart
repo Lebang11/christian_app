@@ -25,21 +25,23 @@ class _ChurchMapState extends State<ChurchMap> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.grey[900],
-        appBar: appbar(context),
-        bottomNavigationBar: navbar(
-          currentIndex: _currentIndex,
-          onTap: _onTabTapped,
-        ),
-        body: Column(children: [
-          Center(
-            child: Text(
+        appBar: AppBar(
+          title: Text(
               'Map',
               style: TextStyle(
                   fontFamily: 'Lobster',
                   fontSize: 40.0,
                   color: const Color.fromARGB(255, 222, 222, 222)),
             ),
-          )
+            centerTitle: true,
+            backgroundColor: Colors.transparent,
+        ),
+        bottomNavigationBar: navbar(
+          currentIndex: _currentIndex,
+          onTap: _onTabTapped,
+        ),
+        body: Column(children: [
+          
         ]));
   }
 }

@@ -115,20 +115,24 @@ class _DiaryState extends State<Diary> {
 
     return Scaffold(
       backgroundColor: Colors.grey[900],
-      appBar: appbar(context),
-      bottomNavigationBar: navbar(
-        currentIndex: _currentIndex,
-        onTap: _onTabTapped,
-      ),
-      body: Column(
-        children: [
-          Text(
+      appBar: AppBar(
+        title: Text(
             'Diary',
             style: TextStyle(
                 fontFamily: 'Lobster',
                 fontSize: 40.0,
                 color: const Color.fromARGB(255, 222, 222, 222)),
           ),
+          centerTitle: true,
+          backgroundColor: Colors.transparent,
+      ),
+      bottomNavigationBar: navbar(
+        currentIndex: _currentIndex,
+        onTap: _onTabTapped,
+      ),
+      body: Column(
+        children: [
+         
           FloatingActionButton(
             onPressed: createDiary,
             child: Icon(
