@@ -55,6 +55,7 @@ class _DiaryState extends State<Diary> {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
+              // backgroundColor: Colors,
               title: Center(
                 child: Title(
                     color: const Color.fromARGB(255, 40, 38, 52),

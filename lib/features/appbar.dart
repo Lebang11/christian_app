@@ -35,8 +35,7 @@ PreferredSizeWidget appbar(BuildContext context) {
     //       })
     // ],
 
-    toolbarHeight: 90.0,
-    leadingWidth: 240.0,
+    toolbarHeight: 70.0,
     centerTitle: true,
     title: Image.asset(
       'assets/logo/logo-no-background.png',
