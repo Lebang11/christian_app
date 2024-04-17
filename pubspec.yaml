@@ -46,6 +46,7 @@ dependencies:
   draggable_home: ^1.0.5
   google_maps_flutter: ^2.6.0
   geolocator: ^11.0.0
+  geocoding: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -92,7 +93,8 @@ flutter:
   fonts:
     - family: Kanit
       fonts:
-        - asset: assets/fonts/Kanit/Kanit-Black.ttf
+        - asset: assets/fonts/Kanit/Kanit-Medium.ttf
+    
     - family: Fire Sans
       fonts:
         - asset: assets/fonts/Salvation/Fira-Sans-Extra-Condensed.ttf
