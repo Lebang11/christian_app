@@ -18,11 +18,13 @@ class ChurchMap extends StatefulWidget {
 
 class _ChurchMapState extends State<ChurchMap> {
   late GoogleMapController mapController;
-  final search = TextEditingController();
+  final searchController = SearchController();
 
   int _currentIndex = 1;
 
   List<Map> results = [];
+  
+   get selectedText => null;
 
   void _onTabTapped(int index) {
     setState(() {
@@ -33,14 +35,20 @@ class _ChurchMapState extends State<ChurchMap> {
     });
   }
 
-  void PlacesSearch(String query) async {
+  Future<void> PlacesSearch(String query) async {
+    results.clear();
+    print('query = ' + query);
     String apiKey = "AIzaSyA__TXPjWnJHmL67G2xeqtwEyB61birpMU";
+    String types = "church";
+    String region = "za";
 
     Uri uri = Uri.https("maps.googleapis.com",
-      'maps/api/place/queryautocomplete/json',
+      'maps/api/place/autocomplete/json',
       {
         "input": query,
-        "key": apiKey
+        "key": apiKey,
+        "types": types,
+        "region": region
       }
     );
 
@@ -94,24 +102,45 @@ class _ChurchMapState extends State<ChurchMap> {
         ),
         body: Column(
         children: [
-          TextFormField(
-            enableSuggestions: true,
-            controller: search,
-            decoration: InputDecoration(
-              labelText: "Search church here",
-              labelStyle: TextStyle(
-                color: Colors.white,
-                fontSize: 20.0
-              )
-            ),
-          ),
+          SearchAnchor(builder: (BuildContext context, SearchController controller) {
+            return SearchBar(
+              
+              controller: controller,
+                leading: Icon(Icons.search),
+                backgroundColor: MaterialStateColor.resolveWith((states) {
+                  return Colors.transparent;
+                  }),
+                  elevation: MaterialStateProperty.resolveWith((states) => 0.0),
+              onChanged: (_) {
+                setState(() {
+                controller.openView();});
+                },
+              // onTap: () {controller.openView();},
+            );
+          }, suggestionsBuilder: 
+                  (BuildContext context, SearchController controller) async {
+                    await PlacesSearch(controller.text);
+
+                    return List<ListTile>.generate(5, (int index) {
+
+                    final String item = results.isNotEmpty ? results.elementAt(index)["description"] : "";
+                    print(item);
+                    return ListTile(
+                      title: Text(item),
+                      onTap: () {
+                        setState(() {
+                          controller.closeView(item);
+                        });
+                      },
+                    );
+                  });
+          }),
           SizedBox(
             width: MediaQuery.of(context).size.width,  // or use fixed size like 200
             height: MediaQuery.of(context).size.height /2.5,
             child: GoogleShowMap()),
-          FloatingActionButton(onPressed:()=> {
-            
-            PlacesSearch(search.text)
+          FloatingActionButton(onPressed:(){
+            print(searchController.text + " church");
             }),
         ])
           
