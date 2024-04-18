@@ -30,11 +30,13 @@ class _ChurchMapState extends State<ChurchMap> {
   late LatLng? newCenter;
 
 
-
   int _currentIndex = 1;
 
   List<Map> results = [];
   List<Map> closeChurches = [];
+
+  GoogleShowMap MapView = GoogleShowMap(center: LatLng(-28, 24), closeChurches: [],);
+
 
   
    get selectedText => null;
@@ -114,8 +116,8 @@ class _ChurchMapState extends State<ChurchMap> {
 
     
 
-    print("Search results: " + results.toString());
-    print("Close churches: " + closeChurches.toString());
+    // print("Search results: " + results.toString());
+    // print("Close churches: " + closeChurches.toString());
 
   }
 
@@ -176,16 +178,16 @@ class _ChurchMapState extends State<ChurchMap> {
       this.userLong = this.position!.longitude.toString();
       this.newCenter = LatLng(this.position!.latitude, this.position!.longitude);
       print("found User permission: ($userLat, $userLong)");
-      print("New center: " + newCenter.toString());
       await ClosePlacesSearch("$userLat,$userLong");
-
-      setState(() {});
+      setState(() {
+        
+      MapView = GoogleShowMap(center: LatLng(this.position!.latitude, this.position!.longitude), closeChurches: this.closeChurches,);
+      });
     }
 
        WidgetsBinding.instance
         .addPostFrameCallback((_) => getLocation(context));
    
-    GoogleShowMap MapView = GoogleShowMap();
 
     return Scaffold(
         backgroundColor: Colors.grey[900],
