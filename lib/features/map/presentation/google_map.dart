@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
@@ -70,6 +72,11 @@ class _GoogleShowMapState extends State<GoogleShowMap> {
       );
     }
     return GoogleMap(
+      gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>[
+        new Factory<OneSequenceGestureRecognizer>(
+          () => new EagerGestureRecognizer(),
+        ),
+      ].toSet(),
       onMapCreated: onMapCreated,
       initialCameraPosition: CameraPosition(
         target: this.center,
