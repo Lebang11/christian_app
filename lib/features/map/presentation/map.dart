@@ -11,8 +11,6 @@ import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
 import 'package:geolocator/geolocator.dart';
 
-
-
 class ChurchMap extends StatefulWidget {
   const ChurchMap({super.key});
 
@@ -29,17 +27,17 @@ class _ChurchMapState extends State<ChurchMap> {
   late String? userLong;
   late LatLng? newCenter;
 
-
   int _currentIndex = 1;
 
   List<Map> results = [];
   List<Map> closeChurches = [];
 
-  GoogleShowMap MapView = GoogleShowMap(center: LatLng(-28, 24), closeChurches: [],);
+  GoogleShowMap MapView = GoogleShowMap(
+    center: LatLng(-28, 24),
+    closeChurches: [],
+  );
 
-
-  
-   get selectedText => null;
+  get selectedText => null;
 
   void _onTabTapped(int index) {
     setState(() {
@@ -57,24 +55,17 @@ class _ChurchMapState extends State<ChurchMap> {
     String types = "church";
     String region = "za";
 
-    Uri uri = Uri.https("maps.googleapis.com",
-      'maps/api/place/autocomplete/json',
-      {
-        "input": query,
-        "key": apiKey,
-        "types": types,
-        "region": region
-      }
-    );
+    Uri uri = Uri.https(
+        "maps.googleapis.com",
+        'maps/api/place/autocomplete/json',
+        {"input": query, "key": apiKey, "types": types, "region": region});
 
     String? response = await fetchUrl(uri);
-    
 
     if (response != null) {
       var decoded_json = jsonDecode(response);
       List predictions = decoded_json["predictions"];
-      predictions.forEach((element) { 
-        
+      predictions.forEach((element) {
         results.add(element);
       });
       // print(predictions);
@@ -82,90 +73,83 @@ class _ChurchMapState extends State<ChurchMap> {
     print(results);
   }
 
-    Future<void> ClosePlacesSearch(String location) async {
-
-      
-
+  Future<void> ClosePlacesSearch(String location) async {
     closeChurches.clear();
     print('location = ' + location);
     String apiKey = "AIzaSyA__TXPjWnJHmL67G2xeqtwEyB61birpMU";
     String types = "church";
     String region = "za";
 
-    Uri uri = Uri.https("maps.googleapis.com",
-      'maps/api/place/nearbysearch/json',
-      {
-        "location": location,
-        "key": apiKey,
-        "types": types,
-        "radius": "10000"
-      }
-    );
+    Uri uri = Uri.https(
+        "maps.googleapis.com", 'maps/api/place/nearbysearch/json', {
+      "location": location,
+      "key": apiKey,
+      "types": types,
+      "radius": "10000"
+    });
 
     String? response = await fetchUrl(uri);
-    
 
     if (response != null) {
       var decoded_json = jsonDecode(response);
       List closeResults = decoded_json["results"];
       closeResults.forEach((element) {
-        print(element["name"]);
         closeChurches.add(element);
       });
     }
 
-    
-
     // print("Search results: " + results.toString());
     // print("Close churches: " + closeChurches.toString());
-
   }
 
   Future<String?> fetchUrl(Uri uri, {Map<String, String>? headers}) async {
-        try {
-          final response = await http.get(uri);
-          if (response.statusCode == 200) {
-            return response.body;
-          }
-        } catch (e) {
-          debugPrint(e.toString());
-        }
-        return null;
+    try {
+      final response = await http.get(uri);
+      if (response.statusCode == 200) {
+        return response.body;
       }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+    return null;
+  }
 
   Future<bool> _handleLocationPermission() async {
-  bool serviceEnabled;
-  LocationPermission permission;
-  print('Getting Location permission');
-  serviceEnabled = await Geolocator.isLocationServiceEnabled();
-  if (!serviceEnabled) {
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Location services are disabled. Please enable the services')));
-    return false;
-  }
-  permission = await Geolocator.checkPermission();
-  if (permission == LocationPermission.denied) {
-    permission = await Geolocator.requestPermission();
-    if (permission == LocationPermission.denied) {   
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Location permissions are denied')));
+    bool serviceEnabled;
+    LocationPermission permission;
+    print('Getting Location permission');
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location services are disabled. Please enable the services')));
       return false;
     }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Location permissions are denied')));
+        return false;
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location permissions are permanently denied, we cannot request permissions.')));
+      return false;
+    }
+    return true;
   }
-  if (permission == LocationPermission.deniedForever) {
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Location permissions are permanently denied, we cannot request permissions.')));
-    return false;
-  }
-  return true;
-}
 
   Future<Position?> userPosition() async {
-      print("Getting user location");
+    print("Getting user location");
 
-      Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
 
-      return position;
+    return position;
   }
 
   @override
@@ -176,98 +160,108 @@ class _ChurchMapState extends State<ChurchMap> {
       this.position = await userPosition();
       this.userLat = this.position!.latitude.toString();
       this.userLong = this.position!.longitude.toString();
-      this.newCenter = LatLng(this.position!.latitude, this.position!.longitude);
+      this.newCenter =
+          LatLng(this.position!.latitude, this.position!.longitude);
       print("found User permission: ($userLat, $userLong)");
       await ClosePlacesSearch("$userLat,$userLong");
       setState(() {
-        
-      MapView = GoogleShowMap(center: LatLng(this.position!.latitude, this.position!.longitude), closeChurches: this.closeChurches,);
+        MapView = GoogleShowMap(
+          center: LatLng(this.position!.latitude, this.position!.longitude),
+          closeChurches: this.closeChurches,
+        );
       });
     }
 
-       WidgetsBinding.instance
-        .addPostFrameCallback((_) => getLocation(context));
-   
+    WidgetsBinding.instance.addPostFrameCallback((_) => getLocation(context));
 
     return Scaffold(
         backgroundColor: Colors.grey[900],
         appBar: AppBar(
           title: Text(
-              'Map',
-              style: TextStyle(
-                  fontFamily: 'Lobster',
-                  fontSize: 40.0,
-                  color: const Color.fromARGB(255, 222, 222, 222)),
-            ),
-            centerTitle: true,
-            backgroundColor: Colors.transparent,
-            
+            'Map',
+            style: TextStyle(
+                fontFamily: 'Lobster',
+                fontSize: 40.0,
+                color: const Color.fromARGB(255, 222, 222, 222)),
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.transparent,
         ),
         bottomNavigationBar: navbar(
           currentIndex: _currentIndex,
           onTap: _onTabTapped,
         ),
         body: SingleChildScrollView(
-          child: Column(
-          children: [
-            SearchAnchor(builder: (BuildContext context, SearchController controller) {
+          child: Column(children: [
+            SearchAnchor(
+                builder: (BuildContext context, SearchController controller) {
               return SearchBar(
-                
                 controller: controller,
-                  leading: Icon(Icons.search),
-                  backgroundColor: MaterialStateColor.resolveWith((states) {
-                    return Colors.transparent;
-                    }),
-                    elevation: MaterialStateProperty.resolveWith((states) => 0.0),
+                leading: Icon(Icons.search),
+                backgroundColor: MaterialStateColor.resolveWith((states) {
+                  return Colors.transparent;
+                }),
+                elevation: MaterialStateProperty.resolveWith((states) => 0.0),
                 onChanged: (_) {
                   setState(() {
-                  controller.openView();});
-                  },
+                    controller.openView();
+                  });
+                },
                 // onTap: () {controller.openView();},
               );
-            }, suggestionsBuilder: 
+            }, suggestionsBuilder:
                     (BuildContext context, SearchController controller) async {
-                      await PlacesSearch(controller.text);
-          
-                      return List<ListTile>.generate(5, (int index) {
-          
-                      final String item = results.isNotEmpty ? results.elementAt(index)["description"] : "";
-                      print(item);
-                      return ListTile(
-                        title: Text(item),
-                        onTap: () {
-                          setState(() {
-                            controller.closeView(item);
-                          });
-                        },
-                      );
+              await PlacesSearch(controller.text);
+
+              return List<ListTile>.generate(5, (int index) {
+                final String item = results.isNotEmpty
+                    ? results.elementAt(index)["description"]
+                    : "";
+                print(item);
+                return ListTile(
+                  title: Text(item),
+                  onTap: () {
+                    setState(() {
+                      controller.closeView(item);
                     });
+                  },
+                );
+              });
             }),
             SizedBox(
-              width: MediaQuery.of(context).size.width,  // or use fixed size like 200
-              height: MediaQuery.of(context).size.height /2.5,
-              child: MapView),
-              
-              
-              Text('Closest churches', style: TextStyle(fontSize: 20.0),),
-          
+                width: MediaQuery.of(context)
+                    .size
+                    .width, // or use fixed size like 200
+                height: MediaQuery.of(context).size.height / 2.5,
+                child: MapView),
+            Text(
+              'Closest churches',
+              style: TextStyle(fontSize: 20.0),
+            ),
             SizedBox(
-              width: MediaQuery.of(context).size.width,  // or use fixed size like 200
-              height: MediaQuery.of(context).size.height /3,
+              width: MediaQuery.of(context)
+                  .size
+                  .width, // or use fixed size like 200
+              height: MediaQuery.of(context).size.height / 3,
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 20.0),
-                child: ListView.separated(itemBuilder: (BuildContext context, int index) {
-                  final String churchName = closeChurches.isNotEmpty ? closeChurches.elementAt(index)["name"] : "";
-                  final String churchVicinity = closeChurches.isNotEmpty ? closeChurches.elementAt(index)["vicinity"] : "";
-                  return Text(churchName + " ~ " + churchVicinity);
-                }, separatorBuilder:(BuildContext context, int index) => Divider(), itemCount: closeChurches.length < 11 ? closeChurches.length : 10),
+                child: ListView.separated(
+                    itemBuilder: (BuildContext context, int index) {
+                      final String churchName = closeChurches.isNotEmpty
+                          ? closeChurches.elementAt(index)["name"]
+                          : "";
+                      final String churchVicinity = closeChurches.isNotEmpty
+                          ? closeChurches.elementAt(index)["vicinity"]
+                          : "";
+                      return Text(churchName + " ~ " + churchVicinity);
+                    },
+                    separatorBuilder: (BuildContext context, int index) =>
+                        Divider(),
+                    itemCount:
+                        closeChurches.length < 11 ? closeChurches.length : 10),
               ),
             )
-            
           ]),
-        )
-          
-
-        );
+        ));
   }
 }

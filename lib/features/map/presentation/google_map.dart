@@ -8,55 +8,64 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 class GoogleShowMap extends StatefulWidget {
   LatLng center;
   List<Map> closeChurches;
-  GoogleShowMap( {required this.center, super.key, required this.closeChurches}) {
+  GoogleShowMap(
+      {required this.center, super.key, required this.closeChurches}) {
     this.center = center;
   }
 
   @override
-  State<GoogleShowMap> createState() => _GoogleShowMapState(this.center, this.closeChurches);
+  State<GoogleShowMap> createState() =>
+      _GoogleShowMapState(this.center, this.closeChurches);
 }
 
 class _GoogleShowMapState extends State<GoogleShowMap> {
   bool Loaded = false;
   late LatLng center;
   late List<Map> closeChurches;
+  late Set<Marker> markers = {};
 
   _GoogleShowMapState(LatLng center, List<Map> closeChurches) {
     this.center = center;
     this.closeChurches = closeChurches;
   }
-  
+
   @override
   void didUpdateWidget(covariant GoogleShowMap oldWidget) {
     print("didUpdate was called");
-    
-    setState(() {
-      
-    this.center = widget.center;
 
+    setState(() {
+      this.center = widget.center;
+      this.closeChurches = widget.closeChurches;
+      print(this.closeChurches);
+      this.closeChurches.forEach((church) {
+        Map churchLocation = church["geometry"]["location"];
+        print(churchLocation);
+
+        markers.add(Marker(
+            icon: BitmapDescriptor.defaultMarker,
+            markerId: MarkerId("Here"),
+            infoWindow:
+                InfoWindow(title: church["name"], snippet: church["vicinity"]),
+            position: LatLng(churchLocation["lat"], churchLocation["lng"])));
+      });
     });
 
     print("New center: " + widget.center.toString());
     Loaded = true;
 
     super.didUpdateWidget(oldWidget);
+  }
 
-
-
-   }
-
-  
-  
   @override
   Widget build(BuildContext context) {
     late GoogleMapController mapController;
-    
+
     void onMapCreated(GoogleMapController controller) {
       mapController = controller;
+      this.markers.forEach((marker) {
+        mapController.showMarkerInfoWindow(marker.markerId);
+      });
     }
-
-    
-    Set<Marker> markers = {Marker(icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),markerId: MarkerId("Here"), infoWindow: InfoWindow(snippet: "You are here"), position: this.center),};
 
     if (!Loaded) {
       return SpinKitCircle(
@@ -64,12 +73,12 @@ class _GoogleShowMapState extends State<GoogleShowMap> {
       );
     }
     return GoogleMap(
-            onMapCreated: onMapCreated,
-            initialCameraPosition: CameraPosition(
-              target: this.center,
-              zoom: 12.0,
-            ),
-            markers: markers,
-            );
+      onMapCreated: onMapCreated,
+      initialCameraPosition: CameraPosition(
+        target: this.center,
+        zoom: 12.0,
+      ),
+      markers: this.markers,
+    );
   }
 }
