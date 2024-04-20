@@ -39,11 +39,10 @@ class _GoogleShowMapState extends State<GoogleShowMap> {
       print(this.closeChurches);
       this.closeChurches.forEach((church) {
         Map churchLocation = church["geometry"]["location"];
-        print(churchLocation);
 
         markers.add(Marker(
             icon: BitmapDescriptor.defaultMarker,
-            markerId: MarkerId("Here"),
+            markerId: MarkerId(church["name"]),
             infoWindow:
                 InfoWindow(title: church["name"], snippet: church["vicinity"]),
             position: LatLng(churchLocation["lat"], churchLocation["lng"])));
@@ -62,9 +61,7 @@ class _GoogleShowMapState extends State<GoogleShowMap> {
 
     void onMapCreated(GoogleMapController controller) {
       mapController = controller;
-      this.markers.forEach((marker) {
-        mapController.showMarkerInfoWindow(marker.markerId);
-      });
+      mapController.showMarkerInfoWindow(MarkerId("Location"));
     }
 
     if (!Loaded) {
@@ -78,7 +75,15 @@ class _GoogleShowMapState extends State<GoogleShowMap> {
         target: this.center,
         zoom: 12.0,
       ),
-      markers: this.markers,
+      markers: {
+        Marker(
+            markerId: MarkerId("Location"),
+            icon: BitmapDescriptor.defaultMarkerWithHue(
+                BitmapDescriptor.hueAzure),
+            infoWindow: InfoWindow(title: "You are here"),
+            position: this.center),
+        ...this.markers
+      },
     );
   }
 }
