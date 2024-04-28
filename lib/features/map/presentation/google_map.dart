@@ -10,8 +10,13 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 class GoogleShowMap extends StatefulWidget {
   LatLng center;
   List<Map> closeChurches;
+
+  var searchedChurch;
   GoogleShowMap(
-      {required this.center, super.key, required this.closeChurches}) {
+      {required this.center,
+      super.key,
+      required this.closeChurches,
+      this.searchedChurch}) {
     this.center = center;
   }
 
@@ -25,6 +30,7 @@ class _GoogleShowMapState extends State<GoogleShowMap> {
   late LatLng center;
   late List<Map> closeChurches;
   late Set<Marker> markers = {};
+  var searchedChurch;
 
   _GoogleShowMapState(LatLng center, List<Map> closeChurches) {
     this.center = center;
@@ -36,9 +42,11 @@ class _GoogleShowMapState extends State<GoogleShowMap> {
     print("didUpdate was called");
 
     setState(() {
+      Loaded = false;
       this.center = widget.center;
       this.closeChurches = widget.closeChurches;
-      print(this.closeChurches);
+      this.searchedChurch = widget.searchedChurch;
+
       this.closeChurches.forEach((church) {
         Map churchLocation = church["geometry"]["location"];
 

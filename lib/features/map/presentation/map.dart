@@ -1,7 +1,11 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:flutter/widgets.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:salvation/features/appbar.dart';
+import 'package:salvation/features/map/presentation/flutter_map.dart';
 import 'package:salvation/features/map/presentation/google_map.dart';
 import 'package:salvation/features/navbar.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:flutter_map/flutter_map.dart';
 
 class ChurchMap extends StatefulWidget {
   const ChurchMap({super.key});
@@ -21,6 +26,14 @@ class ChurchMap extends StatefulWidget {
 class _ChurchMapState extends State<ChurchMap> {
   late GoogleMapController mapController;
   final searchController = SearchController();
+  late bool foundPosition;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    this.foundPosition = false;
+  }
 
   late Position? position;
   late String? userLat;
@@ -32,10 +45,12 @@ class _ChurchMapState extends State<ChurchMap> {
   List<Map> results = [];
   List<Map> closeChurches = [];
 
-  GoogleShowMap MapView = GoogleShowMap(
+  GoogleShowMap GoogleMapView = GoogleShowMap(
     center: LatLng(-28, 24),
     closeChurches: [],
   );
+
+  late FlutterShowMap FlutterMapView;
 
   get selectedText => null;
 
@@ -152,28 +167,32 @@ class _ChurchMapState extends State<ChurchMap> {
     return position;
   }
 
+  Future<Position?> getLocation(BuildContext context) async {
+    await _handleLocationPermission();
+    this.position = await userPosition();
+    this.userLat = this.position!.latitude.toString();
+    this.userLong = this.position!.longitude.toString();
+    this.newCenter = LatLng(this.position!.latitude, this.position!.longitude);
+    print("found User permission: ($userLat, $userLong)");
+    // await ClosePlacesSearch("$userLat,$userLong");
+    setState(() {
+      // GoogleMapView = GoogleShowMap(
+      //   center: LatLng(this.position!.latitude, this.position!.longitude),
+      //   closeChurches: this.closeChurches,
+      // );
+      this.foundPosition = true;
+      FlutterMapView = FlutterShowMap(
+        center: LatLng(this.position!.latitude, this.position!.longitude),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // ignore: unused_element
-    Future<Position?> getLocation(BuildContext context) async {
-      await _handleLocationPermission();
-      this.position = await userPosition();
-      this.userLat = this.position!.latitude.toString();
-      this.userLong = this.position!.longitude.toString();
-      this.newCenter =
-          LatLng(this.position!.latitude, this.position!.longitude);
-      print("found User permission: ($userLat, $userLong)");
-      await ClosePlacesSearch("$userLat,$userLong");
-      setState(() {
-        MapView = GoogleShowMap(
-          center: LatLng(this.position!.latitude, this.position!.longitude),
-          closeChurches: this.closeChurches,
-        );
-      });
+    if (!this.foundPosition) {
+      getLocation(context);
     }
-
-    WidgetsBinding.instance.addPostFrameCallback((_) => getLocation(context));
-
     return Scaffold(
         backgroundColor: Colors.grey[900],
         appBar: AppBar(
@@ -233,7 +252,11 @@ class _ChurchMapState extends State<ChurchMap> {
                     .size
                     .width, // or use fixed size like 200
                 height: MediaQuery.of(context).size.height / 2.5,
-                child: MapView),
+                child: foundPosition
+                    ? FlutterMapView
+                    : SpinKitCircle(
+                        color: Colors.blueAccent,
+                      )),
             Text(
               'Closest churches',
               style: TextStyle(fontSize: 20.0),
